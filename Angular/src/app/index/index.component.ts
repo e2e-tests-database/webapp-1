@@ -12,9 +12,9 @@ import * as c3 from 'c3';
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'index',
-  templateUrl: './index.html',
-  styleUrls: ['../common-css/css/index.css']
+	selector: 'index',
+	templateUrl: './index.html',
+	styleUrls: ['../common-css/css/index.css']
 })
 
 export class IndexComponent {
@@ -22,90 +22,106 @@ export class IndexComponent {
 	public carousel = [];
 	public URL = environment.url.substring(0, environment.url.length - 1);
 
-  constructor(private decorator: DecoratorService, private commonFunction: CommonFunction, private filmService: FilmService, private showService: ShowService, private bookService: BookService, private genderService: GenderService) { 
+	constructor(private decorator: DecoratorService, private commonFunction: CommonFunction, private filmService: FilmService, private showService: ShowService, private bookService: BookService, private genderService: GenderService) {
 		this.decorator.activeButton("index");
 	};
 
-  ngOnInit() {
-    this.loadCorousel();
-  }
+	ngOnInit() {
+		this.loadCorousel();
+	}
 
-  private loadCorousel() {
-    this.filmService.getLastAdded(1).subscribe(
-      films => this.loadElementsCarousel(films, "film")
+	private loadCorousel() {
+		this.filmService.getLastAdded(1).subscribe(
+			films => this.loadElementsCarousel(films, "film")
 		);
-		
+
 		this.showService.getLastAdded(1).subscribe(
-      shows => this.loadElementsCarousel(shows, "show")
+			shows => this.loadElementsCarousel(shows, "show")
 		);
-		
+
 		this.bookService.getLastAdded(1).subscribe(
-      books => this.loadElementsCarousel(books, "book")
-    );
-  }
+			books => this.loadElementsCarousel(books, "book")
+		);
+	}
 
-  private loadElementsCarousel(elements, type: string){
-    for(let elem of elements){
+	private loadElementsCarousel(elements, type: string) {
+		for (let elem of elements) {
 			elem.type = type;
-      this.carousel.push(elem);
-    }
-  }
+			this.carousel.push(elem);
+		}
+	}
 
-  ngAfterViewInit() {
-    this.filmService.getGrafic().subscribe(
-      films => this.graficFilms(films)
+	ngAfterViewInit() {
+		this.filmService.getGrafic().subscribe(
+			films => this.graficFilms(this.changeLayoutChar(films, "Puntos"))
 		);
-		
+
 		this.showService.getGrafic().subscribe(
-      shows => this.graficShows(shows)
+			shows => this.graficShows(this.changeLayoutChar(shows, "Puntos"))
 		);
-		
+
 		this.bookService.getGrafic().subscribe(
-      books => this.graficBooks(books)
-    );
+			books => this.graficBooks(this.changeLayoutChar(books, "Puntos"))
+		);
 
-    this.genderService.getGrafic().subscribe(
-      genders => this.graficGende(genders)
-    );
-  }
+		this.genderService.getGrafic().subscribe(
+			genders => this.graficGende(this.changeLayoutChar(genders, "Contenido por genero"))
+		);
+	}
 
-  private graficFilms(films){
-		console.log("Loaded graphic of movies: \n" + JSON.stringify(films));
+	private changeLayoutChar(list, showName) {
+		let newList = [];
 
-    let chart = c3.generate({
-      bindto: '#bestFilmsPoints',
-      data: {
-        json: films,
-        type: 'bar',
-        keys: {
-          x: 'name',
-          value: ['points'],
-        }
-      },
-      axis: {
-        x: {
-          type: 'category'
-        }
-      }
-    });
-  }
+		list.forEach(element => {
+			let newElement = {};
+			newElement["name"] = element.name;
+			newElement[showName] = element.points
 
-  private graficShows(shows){
-		console.log("Loaded graphic of shows: \n" + JSON.stringify(shows));
+			newList.push(newElement);
+		});
 
+		return newList;
+	}
+
+	private graficFilms(films) {
 		let chart = c3.generate({
-			bindto : '#bestShowsPoints',
-			data : {
-				json : shows,
-				type : 'bar',
-				keys : {
-					x : 'name',
-					value : [ 'points' ],
+			bindto: '#bestFilmsPoints',
+			data: {
+				json: films,
+				type: 'bar',
+				keys: {
+					x: 'name',
+					value: ['Puntos'],
 				}
 			},
-			axis : {
-				x : {
-					type : 'category'
+			legend: {
+				show: false
+			},
+			axis: {
+				x: {
+					type: 'category'
+				}
+			}
+		});
+	}
+
+	private graficShows(shows) {
+		let chart = c3.generate({
+			bindto: '#bestShowsPoints',
+			data: {
+				json: shows,
+				type: 'bar',
+				keys: {
+					x: 'name',
+					value: ['Puntos'],
+				}
+			},
+			legend: {
+				show: false
+			},
+			axis: {
+				x: {
+					type: 'category'
 				}
 			}
 		});
@@ -115,18 +131,21 @@ export class IndexComponent {
 		console.log("Loaded graphic of books: \n" + JSON.stringify(books));
 
 		var chart = c3.generate({
-			bindto : '#bestBooksPoints',
-			data : {
-				json : books,
-				type : 'bar',
-				keys : {
-					x : 'name',
-					value : [ 'points' ],
+			bindto: '#bestBooksPoints',
+			data: {
+				json: books,
+				type: 'bar',
+				keys: {
+					x: 'name',
+					value: ['Puntos'],
 				}
 			},
-			axis : {
-				x : {
-					type : 'category'
+			legend: {
+				show: false
+			},
+			axis: {
+				x: {
+					type: 'category'
 				}
 			}
 		});
@@ -136,20 +155,23 @@ export class IndexComponent {
 		console.log("Loaded graphic of genders: \n" + JSON.stringify(genders));
 
 		var chart = c3.generate({
-			bindto : '#gende',
-			data : {
-				json : genders,
-				type : 'bar',
-				keys : {
-					x : 'name',
-					value : [ 'numItems' ],
+			bindto: '#gende',
+			data: {
+				json: genders,
+				type: 'bar',
+				keys: {
+					x: 'name',
+					value: ['Contenido por genero'],
 				}
 			},
-			axis : {
-				x : {
-					type : 'category'
+			legend: {
+				show: false
+			},
+			axis: {
+				x: {
+					type: 'category'
 				}
 			}
 		});
-  }
+	}
 }

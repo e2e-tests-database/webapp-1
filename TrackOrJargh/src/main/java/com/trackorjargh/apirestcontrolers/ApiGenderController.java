@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trackorjargh.grafics.NumberItemByGende;
 import com.trackorjargh.javaclass.Book;
 import com.trackorjargh.javaclass.Film;
+import com.trackorjargh.grafics.Grafics;
 import com.trackorjargh.javaclass.Gender;
 import com.trackorjargh.javaclass.Shows;
 import com.trackorjargh.javarepository.GenderRepository;
@@ -42,8 +42,8 @@ public class ApiGenderController {
 	}
 
 	@RequestMapping(value = "/generos/grafico", method = RequestMethod.GET)
-	public List<NumberItemByGende> getGraphicGende() {
-		List<NumberItemByGende> listGende = new ArrayList<>();
+	public List<Grafics> getGraphicGende() {
+		List<Grafics> listGende = new ArrayList<>();
 
 		int sumGende;
 		for (Gender gende : genderRepository.findAll()) {
@@ -52,7 +52,7 @@ public class ApiGenderController {
 			sumGende += gende.getBooks().size();
 			sumGende += gende.getShows().size();
 
-			listGende.add(new NumberItemByGende(gende.getName(), sumGende));
+			listGende.add(new Grafics(gende.getName(), sumGende));
 		}
 
 		log.info("Genres JSON: \n {}", graph2json(listGende));
