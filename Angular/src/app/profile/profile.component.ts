@@ -95,7 +95,9 @@ export class ProfileComponent {
 
   private loadLists() {
     this.serviceList.getContentList().subscribe(
-      lists => this.lists = lists
+      lists => {
+        this.lists = lists
+      }
     );
   }
 
