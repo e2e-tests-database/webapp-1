@@ -24,6 +24,9 @@ export class LoginComponent {
   public userName = "";
   public validationLoginForm: FormGroup;
   public validationRegisterForm: FormGroup;
+  public marginFooter = {
+    'margin-bottom': '20em'
+  }
 
   constructor(private decorator: DecoratorService, public userComponent: UserComponent, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private fb: FormBuilder, private location: Location) {
     this.decorator.activeButton("login");
@@ -86,6 +89,16 @@ export class LoginComponent {
         'user': [this.userName, Validators.required],
         'pass': [null, Validators.required],
       });
+    }
+  }
+
+  public changeMarginFooter(){
+    if (this.isCollapsed) {
+      this.isCollapsed = false;
+      this.marginFooter["margin-bottom"] = "40em";
+    } else {
+      this.isCollapsed = true;
+      this.marginFooter["margin-bottom"] = "20em";
     }
   }
 
