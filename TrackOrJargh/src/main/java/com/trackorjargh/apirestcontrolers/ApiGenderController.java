@@ -47,7 +47,9 @@ public class ApiGenderController {
 
 		int sumGende = 0;
 		List<Gender> arrayGende = genderRepository.findAll();
-		for (int x=0; x < arrayGende.size(); x++) {		
+		for (int x=0; x < arrayGende.size(); x++) {	
+			sumGende = 0;
+			
 			sumGende += arrayGende.get(x).getFilms().size();
 			sumGende += arrayGende.get(x).getBooks().size();
 			sumGende += arrayGende.get(x).getShows().size();
