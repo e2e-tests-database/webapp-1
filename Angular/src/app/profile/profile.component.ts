@@ -42,7 +42,11 @@ export class ProfileComponent {
   public newListValidation: FormGroup;
   public urlPDF: SafeResourceUrl;
   public errorCreateList = false;
-  
+  public isCollapsed: boolean = true;
+  public marginFooter = {
+    'margin-bottom': '20em'
+  }
+
   constructor(private decorator: DecoratorService, private userComponent: UserComponent, private serviceList: ListsService, private userService: UserService, private fb: FormBuilder, private imageService: ImageService, private router: Router, private locStrat: LocationStrategy, private sanitized: DomSanitizer) {
     this.decorator.activeButton("profile");
     this.newValidator();
@@ -91,7 +95,9 @@ export class ProfileComponent {
 
   private loadLists() {
     this.serviceList.getContentList().subscribe(
-      lists => this.lists = lists
+      lists => {
+        this.lists = lists
+      }
     );
   }
 
